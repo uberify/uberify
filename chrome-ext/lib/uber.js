@@ -9,11 +9,12 @@ var Uber = (function() {
     // it will also set the access_token on the Uber object
     authorize: function(clientID, scope, callback) {
       access_token = null;
+      var redirectURL = chrome.identity.getRedirectURL();
       chrome.identity.launchWebAuthFlow(
         {
           interactive: true,
           url: "https://login.uber.com/oauth/authorize?client_id=" + 
-            clientID + "&redirect_uri=" + chrome.identity.getRedirectURL() + "&scope=" + scope
+            clientID + "&redirect_uri=" + redirectURL + "&scope=" + scope
         }, 
         function(responseURL) {
           console.log(responseURL);
@@ -27,17 +28,28 @@ var Uber = (function() {
               var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
               return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
             };
-            var auth_code = getParameterByName('code');
+            var auth_code = getParameterByName('code'); // haven't fully tested this function yet...
 
-            // TODO: POST request stuff including the AUTHORIZATION_CODE
+            // POST request to exchange auth code for access token
+            $.ajax({
+              url: "https://login.uber.com/oauth/token",
+              type: "POST",
+              data: {
+                // uber docs also show a client_secret being posted... I don't know if we need that
+                client_id: 'TODO',
+                grant_type: 'authorization_code',
+                redirect_uri: redirectURL,
+                code: auth_code
+              },
+              sucess: function(data) {
+                access_token = data.access_token;
 
-            // TODO: grab the access_token from the response from the POST
+                // TODO: data also includes a refresh_token... this is used to obtain a fresh access_token (access_token expires in 30 days)
 
-            // TODO: set the access_token on the Uber object
-            access_token = 'TODO';
-
-            // call the callback passing in true if we got the access_token
-            callback(true);
+                // call the callback passing in true if we got the access_token
+                callback(true);
+              }
+            });
           }
           else {
             // we didn't get a responseURL so call the callback passing in false
@@ -46,9 +58,30 @@ var Uber = (function() {
         }
       );
     },
+    
+    // Once authenticated we will have the access token in the Uber object.
+    // Here we define a helper function for making uber api calls
+    call: function (method, successCallback, errorCallback) {
+      // when in production url should start with 'https://api.uber.com/v1/'
+      // for now we will use sandbox
+      var url = 'https://sandbox-api.uber.com/v1/' + method;
+     
+      Ajax.ajaxSend(url, "json",
+        function (status, response) {
+          if (response.error) {
+            var err = response.error;
+            if (response.error.message)
+              err = response.error.message;
+            if (errorCallback)
+              errorCallback(response.error.message);
+          }
+          else
+            successCallback(response);
+        },
+        'Authorization: Bearer ' + access_token
+      );
+    }
 
-    // here we can add more Uber related methods like api calls.
-    // Once authenticated we will have the access token in the Uber object
   };
   return api;
 })();
