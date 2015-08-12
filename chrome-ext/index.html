@@ -1,10 +1,6 @@
 <!doctype html>
-<!--
- This page is shown when the extension button is clicked, because the
- "browser_action" field in manifest.json contains the "default_popup" key with
- value "popup.html".
- -->
-<html>
+
+<html ng-app="app">
   <head>
     <title>Uberify</title>
     <style>
@@ -27,11 +23,15 @@
       -
       - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
      -->
-    <script src="popup.js"></script>
+    <script type="text/javascript" src="vendor/angular/angular.min.js"></script>
+    <script type="text/javascript" src="vendor/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+    <script type="text/javascript" src="controllers/loginCtrl.js"></script>
+    <script type="text/javascript" src="controllers/addressesCtrl.js"></script>
+    <script type="text/javascript" src="factories/navFact.js"></script>
   </head>
   <body>
-    <div id="status"></div>
-    <img id="image-result" hidden>
+    <div ui-view></div>
   </body>
 </html>
 
