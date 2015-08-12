@@ -1,0 +1,18 @@
+{
+  "name": "uberify",
+  "version": "1.0.0",
+  "homepage": "",
+  "authors": [],
+  "description": "",
+  "main": "chrome-ext/index.html",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "angular": "~1.4.3",
+    "angular-ui-router": "~0.2.15"
+  }
+}
