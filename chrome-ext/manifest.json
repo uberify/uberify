@@ -11,7 +11,9 @@
   },
   "permissions": [
     "activeTab",
+    "identity",
     "geolocation",
     "https://ajax.googleapis.com/"
+    // TODO: might need to add uber related URLs
   ]
 }
