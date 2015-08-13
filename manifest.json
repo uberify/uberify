@@ -32,6 +32,7 @@
   "permissions": [
     "activeTab",
     "geolocation",
+    "identity",
     "https://ajax.googleapis.com/",
     "tabs", "http://*/*", "https://*/*"
   ]
