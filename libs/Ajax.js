@@ -1,3 +1,5 @@
+
+
 var Ajax = (function () {
     var api = {
         ajaxSend: function (url, responseType, successCallback, errorCallback,

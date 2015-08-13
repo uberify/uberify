@@ -13,19 +13,20 @@
   },
 
   "background": {
-    "scripts": ["background.js"],
+   // "scripts": ["libs/Ajax.js", "libs/uber.js", "background.js"],
+    "page": "background.html",
     "persistent": true
   },
 
   "content_scripts": [
-    // {
-    //   "matches": ["https://www.uber.com/robots.txt*"],
-    //   "js": ["libs/oauth2/injection.js"],
-    //   "run_at":"document_start"
-    // }
+    {
+      "matches": ["https://www.uber.com/robots.txt*"],
+      "js": ["libs/oauth2/injection.js"],
+      "run_at":"document_start"
+    },
     {
       "matches": ["http://*/*", "https://*/*"],
-      "js": ["content.js"]
+      "js": ["libs/jquery-2.1.4.min.js","content.js"]
     }
   ],
 

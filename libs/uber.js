@@ -1,5 +1,19 @@
 
 // here we define an object called "Uber" which will be used as a helper object to authenticate and make uber api calls
+var defaultCorsHeaders = {
+  "access-control-allow-origin": "*",
+  "access-control-allow-methods": "GET, POST, PUT, DELETE, OPTIONS",
+  "access-control-allow-headers": "content-type, accept",
+  "access-control-max-age": 10, // Seconds.
+  'Content-Type': "application/json"
+};
+
+console.log('I am loaded');
+//var uberPort = chrome.runtime.connect(contentID, {name: "uber"});
+
+var storage = window.localStorage.getItem('oauth2_token');
+//console.log(storage);
+
 
 var Uber = (function() {
   var access_token = null;
@@ -65,7 +79,10 @@ var Uber = (function() {
       // when in production url should start with 'https://api.uber.com/v1/'
       // for now we will use sandbox
       var url = 'https://sandbox-api.uber.com/v1/' + method;
-     
+      //defaultCorsHeaders['Authorization'] = 'Bearer ' + window.oauth2.getToken();
+      var token = window.localStorage.oauth2_token;
+      console.log(token);
+
       Ajax.ajaxSend(url, "json",
         function (status, response) {
           if (response.error) {
@@ -78,7 +95,8 @@ var Uber = (function() {
           else
             successCallback(response);
         },
-        'Authorization: Bearer ' + access_token
+        //defaultCorsHeaders
+        {'Authorization': 'Bearer ' + storage}
       );
     }
 

@@ -28,7 +28,51 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 chrome.runtime.onConnect.addListener(function(port) {
     if(port.name == "addresses"){
         port.onMessage.addListener(function(msg) {
-            alert(msg.data)
+            convertAddress(msg);
+            //console.log(window.localStorage);
         });
     }
+    
 });
+
+function getPriceEstimates(start_latitude, start_longitude, end_latitude, end_longitude) {
+  var method = 'estimates/price?start_latitude=' + start_latitude + '&start_longitude=' + start_longitude + '&end_latitude=' +
+    end_latitude + '&end_longitude=' + end_longitude;
+
+  Uber.call(method, function(response) {
+    console.log(response.data);
+  });
+}
+
+var start = {Lat: 37.419938, Long: -122.083479};
+
+function buttonClicked(addr){
+  var inputAddress=addr;
+  if ((inputAddress!=null)&&(inputAddress!="")){
+    var addr = [start.Lat, start.Long];
+    addr.concat(convertAddress(inputAddress));
+    port.postMessage({data: addr}) 
+  } else {
+    displayError("Address can not be empty");
+
+  }
+}
+
+function convertAddress(stringAddress){
+  //this function convert stringAddress into lat lng
+  geocoder = new google.maps.Geocoder();
+  var address = stringAddress;
+  geocoder.geocode( { 'address': address}, function(results, status) {
+    if (status == google.maps.GeocoderStatus.OK) {
+      //displayMap(37.419938, -122.083479, "Atom Cafe, Charleston Road, Mountain View, CA");
+      dLat=results[0].geometry.location.lat();
+      dLng=results[0].geometry.location.lng();
+      console.log("Geocoder Lat", dLat);
+      console.log("Geocoder Lat", dLng);
+      //getPriceEstimates(start.Lat, start.Long, dLat, dLng);
+      return [dLat, dLng];
+    } else {
+      displayError('Geocode was not successful for the following reason: ' + status);
+    }
+  });
+}

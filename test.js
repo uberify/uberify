@@ -12,7 +12,7 @@ $(document).ready(function(){
       buttonClicked(addr);
     })
 });
-  
+
   var start = {Lat: 37.419938, Long: -122.083479};
 
   var DIVID="map-canvas";
@@ -42,6 +42,7 @@ function displayError(errorMessage){
 }
 
 
+
 function convertAddress(stringAddress){
   //this function convert stringAddress into lat lng
   geocoder = new google.maps.Geocoder();
@@ -56,6 +57,7 @@ function convertAddress(stringAddress){
       dLng=results[0].geometry.location.lng();
       console.log("Geocoder Lat", dLat);
       console.log("Geocoder Lat", dLng);
+      getPriceEstimates(start.Lat, start.Long, dLat, dLng);
 
       //  displayMap(dLat, dLng, stringAddress, DIVID);
       //buildHTML("res/htmlTemplate.html",dLat, dLng, stringAddress);
