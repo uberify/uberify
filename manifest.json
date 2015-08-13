@@ -18,10 +18,14 @@
   },
 
   "content_scripts": [
+    // {
+    //   "matches": ["https://www.uber.com/robots.txt*"],
+    //   "js": ["libs/oauth2/injection.js"],
+    //   "run_at":"document_start"
+    // }
     {
-      "matches": ["https://www.uber.com/robots.txt*"],
-      "js": ["libs/oauth2/injection.js"],
-      "run_at":"document_start"
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["content.js"]
     }
   ],
 
