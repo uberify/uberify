@@ -9,8 +9,44 @@
 //     alert('You just typed "' + text + '"');
 // });
 
+// Check if token is on localstorage
+if (localStorage.getItem['oauth2_token'] !== undefined) {
+  chrome.browserAction.setIcon({
+    path : {
+        "19": "icons/19x19-active.png",
+        "38": "icons/38x38-active.png"
+      }
+  })
+}
+
+window.addEventListener('storage', function(storageEvent){
+  if(storageEvent.key === 'oauth2_token' && storageEvent.newValue !== null) {
+    chrome.browserAction.setIcon({
+      path : {
+          "19": "icons/19x19-active.png",
+          "38": "icons/38x38-active.png"
+        }
+    })
+  } else {
+    chrome.browserAction.setIcon({
+      path : {
+          "19": "icons/19x19.png",
+          "38": "icons/38x38.png"
+        }
+    })
+  }
+}, false);
+
+// Storing currentPosition on localStorage
+navigator.geolocation.getCurrentPosition(function(position) {
+  localStorage.setItem('currentPosition', [position.coords.latitude, position.coords.longitude])
+  // console.log(localStorage.getItem('currentPosition'));
+});
+
 // Icon badges
-chrome.browserAction.setBadgeText({text: "1"});
+// chrome.browserAction.setBadgeBackgroundColor({ color: [31, 186, 214, 255] });
+// chrome.browserAction.setBadgeText({text: "1"});
+
 
 // Messaging
 // One-Time Requests
@@ -32,7 +68,7 @@ chrome.runtime.onConnect.addListener(function(port) {
             //console.log(window.localStorage);
         });
     }
-    
+
 });
 
 function getPriceEstimates(start_latitude, start_longitude, end_latitude, end_longitude) {
@@ -51,7 +87,7 @@ function buttonClicked(addr){
   if ((inputAddress!=null)&&(inputAddress!="")){
     var addr = [start.Lat, start.Long];
     addr.concat(convertAddress(inputAddress));
-    port.postMessage({data: addr}) 
+    port.postMessage({data: addr})
   } else {
     displayError("Address can not be empty");
 
