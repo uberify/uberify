@@ -1,0 +1,41 @@
+{
+  "name": "uberify",
+  "description": "One click to ride",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "browser_action": {
+    "default_icon": {
+      "19": "icons/19x19.png",
+      "38": "icons/38x38.png"
+    },
+    "default_title": "That's the tool tip",
+    "default_popup": "index.html"
+  },
+
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": true
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["https://www.uber.com/robots.txt*"],
+      "js": ["libs/oauth2/injection.js"],
+      "run_at":"document_start"
+    }
+  ],
+
+  "icons": { "48": "icons/icon48.png",
+            "128": "icons/icon128.png" },
+
+  "omnibox": { "keyword" : "uber" },
+
+  "permissions": [
+    "activeTab",
+    "geolocation",
+    "https://ajax.googleapis.com/",
+    "tabs", "http://*/*", "https://*/*"
+  ],
+
+  "web_accessible_resources": ["libs/oauth2/oauth2.html"]
+}
