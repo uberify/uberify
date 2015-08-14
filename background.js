@@ -19,6 +19,9 @@ if (localStorage.getItem['oauth2_token'] !== undefined) {
   })
 }
 
+var sendMe = {};
+var profcount = 0;
+
 window.addEventListener('storage', function(storageEvent){
   if(storageEvent.key === 'oauth2_token' && storageEvent.newValue !== null) {
     chrome.browserAction.setIcon({
@@ -62,6 +65,7 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 // Messaging
 // Long-Lived Connections
 chrome.runtime.onConnect.addListener(function(port) {
+   // console.log(port);
     if(port.name == "addresses"){
         port.onMessage.addListener(function(msg) {
             convertAddress(msg.data);
@@ -70,13 +74,26 @@ chrome.runtime.onConnect.addListener(function(port) {
 
     } else if (port.name == "popover"){
         port.onMessage.addListener(function(msg) {
-            console.log(msg)
-            port.postMessage("Hi Popup.js");
-            //console.log(window.localStorage);
+            if (profcount===0){
+                sendMe['Profile'] = msg;
+               //addToSendMe({Profile: msg});
+               profcount++;
+            }
+            
         });
     }
 
 });
+
+function addToSendMe (data) {
+    sendMe.push(data);
+}
+
+function sendmsg(msg){
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
+      chrome.tabs.sendMessage(tabs[0].id, sendMe, function(response) {});  
+  });
+}
 
 var token = window.localStorage.oauth2_token;
 var uberServerToken = 'omqAWb8jjzXpuyw-ae1DRHo5GvJ6zpfFyTxVfTCe';
@@ -91,8 +108,6 @@ navigator.geolocation.watchPosition(function(position) {
     console.log("Got Your Geo position as: "+userLatitude+" Lat "+ userLongitude+" Lng");
 });
 
-
-getUser();
 
 function convertAddress(stringAddress){
   //this function convert stringAddress into lat lng
@@ -113,7 +128,6 @@ function convertAddress(stringAddress){
 }
 
 function getUser (){
-    console.log(token);
 
     $.ajax({
         url: "https://api.uber.com/v1/me",
@@ -139,9 +153,23 @@ function getEstimates(lat, lng) {
         end_longitude: lng
     },
     success: function(result) {
+
+        var addr = {
+            start_latitude: userLatitude,
+            start_longitude: userLongitude,
+            end_latitude: lat,
+            end_longitude: lng
+        }
+        //addToSendMe({Coords: addr});
+        sendMe['Coords']=addr;
+
         var data = result["prices"];
         console.log("Option 1: ", data[0]);
         console.log("Option 2: ", data[1]);
+
+        // addToSendMe({Prices: data});
+        sendMe['Prices']=data;
+        sendmsg();
 
         if (typeof data != typeof undefined) {
           // Sort Uber products by time to the user's location

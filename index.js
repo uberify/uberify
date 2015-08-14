@@ -1,18 +1,20 @@
 
 $(function(){
 
-  var profile = JSON.parse(localStorage.getItem('account'));
+  var profile; 
+   // = JSON.parse(localStorage.getItem('account'));
+  
 
-  $('.profile').attr("src", profile.picture);
 
   var token = oauth2.getToken();
   if (token) {
+    getUser();
     $('#oauthButton').hide();
     $('#clearToken').show();
     $('.introText').hide();
-    $('.name span').text(profile.firstName);
     $('.name').show();
     $('.profile').show();
+
   } else {
     $('#oauthButton').show();
     $('#clearToken').hide();
@@ -24,7 +26,7 @@ $(function(){
 
   var port = chrome.extension.connect({name: "popover"});
   port.onMessage.addListener(function(msg) {
-    // console.log("message recieved "+ msg);
+    console.log("message recieved "+ msg);
   });
 
   $('#oauthButton').on('click', function(){
@@ -59,12 +61,16 @@ $(function(){
               // console.log("User Object: ", result);
 
             localStorage.setItem('account', JSON.stringify({'firstName': result.first_name, 'lastName': result.last_name, 'picture': result.picture}))
-
+            
+            profile = JSON.parse(localStorage.getItem('account'));
+            port.postMessage(profile);
+            $('.name span').text(profile.firstName);
+            $('.profile').attr("src", profile.picture);
+                
           }
       });
   };
 
-  getUser();
 
 
 

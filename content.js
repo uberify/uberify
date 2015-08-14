@@ -19,16 +19,16 @@ $(document).ready(function(){
     console.log(msg)
   });
 
-  // Fetch addresses and send it to bacgkround
-  // var addresses = document.getElementsByTagName('address')
-  // var addrArr = Array.prototype.slice.call(addresses);
+chrome.extension.onMessage.addListener(function(msg, sender, sendResponse) {
+  console.log("content - Got here", msg)
+  var divText = $('<div>'+msg+'</div>');
+  $('body').append(divText);
+  
+});
 
-  // addrArr.forEach(function(addr){
-  //   port.postMessage({data: addr.innerText});
-  // })
 
   var button= $('<button class="uberButton">Get Uber Estimates</button>');
-  $("body").append(button);
+
   $("address").after(button);
   $(".uberButton").each(function () {
     
