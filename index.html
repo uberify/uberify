@@ -2,14 +2,30 @@
 <head>
   <meta charset="UTF-8">
   <title>Ske</title>
+  <link href='http://fonts.googleapis.com/css?family=Lato:400,300,100,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="popup/style.css">
+
 </head>
 <body>
-<button id="oauthButton">Login</button>
-<!-- <button id="getToken">getToken</button> -->
-<button id="clearToken">Logout </button>
+<img class="logo" src="popup/img/logo.png" alt="" height="25">
+<!-- <img class="header" src="popup/img/login-header.png" alt="" height="15"> -->
+<h2 class="name">
+<p class="subtitle fancy"><span></span></p>
+</h2>
+<div class="center">
+<img class="profile" src="">
+</div>
+<button id="oauthButton" class="btn login">Login</button>
+<p class="introText">
+  Uberify connects you with a Uber driver in minutes. Reach any address you can find online.<br>
+  Or type <em>Uber pick me up</em> and relax,<br> we'll do the rest.
+</p>
+<!-- <button id="getToken" class="btn">getToken</button> -->
+<button id="clearToken" class="btn logout">Logout </button>
 
 <script src="libs/jquery-2.1.4.min.js"></script>
 <script src="libs/oauth2/oauth2.js"></script>
 <script src="index.js"></script>
+
 </body>
 </html>

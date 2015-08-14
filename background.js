@@ -67,6 +67,12 @@ chrome.runtime.onConnect.addListener(function(port) {
             convertAddress(msg);
             //console.log(window.localStorage);
         });
+    } else if (port.name == "popover"){
+        port.onMessage.addListener(function(msg) {
+            console.log(msg)
+            port.postMessage("Hi Popup.js");
+            //console.log(window.localStorage);
+        });
     }
 
 });

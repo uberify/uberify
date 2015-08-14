@@ -5,7 +5,7 @@
         authorization_url: "https://login.uber.com/oauth/authorize",
         client_id: "_mSN0yG0lSdeR0ipMIDcnAIwnIbdjhG2",
         client_secret: "e4Lz6Bwj-G2r75fbs97b6NjPxGFy5dfMWGcLOnHH",
-        scopes: 'request',
+        scopes: 'request profile history',
 
         key: "oauth2_token",
 
