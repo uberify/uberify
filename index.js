@@ -43,11 +43,7 @@ $(function(){
   //   // port.postMessage("Hi BackGround");
   // })
 
-  $('#clearToken').on('click', function(){
-    window.oauth2.clearToken();
-    console.log('clear');
-    window.close();
-  })
+
 
 
   function getUser (){

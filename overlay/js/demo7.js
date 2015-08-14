@@ -1,6 +1,7 @@
 $(function() {
 	var container = document.querySelector( 'div.container' ),
 		triggerBttn = document.getElementById( 'trigger-overlay' ),
+		
 		overlay = document.querySelector( 'div.overlay' ),
 		closeBttn = overlay.querySelector( 'button.overlay-close' );
 		transEndEventNames = {
@@ -13,7 +14,16 @@ $(function() {
 		transEndEventName = transEndEventNames[ Modernizr.prefixed( 'transition' ) ],
 		support = { transitions : Modernizr.csstransitions };
 
+
+
+
+
+
 	function toggleOverlay() {
+
+		// Remove previously displayed rows
+		$('.priceRow').remove();
+
 		if( classie.has( overlay, 'open' ) ) {
 			classie.remove( overlay, 'open' );
 			classie.remove( container, 'overlay-open' );
@@ -38,6 +48,7 @@ $(function() {
 		}
 	}
 
+	
 	triggerBttn.addEventListener( 'click', toggleOverlay );
 	closeBttn.addEventListener( 'click', toggleOverlay );
 });

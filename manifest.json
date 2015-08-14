@@ -26,7 +26,7 @@
     },
     {
       "matches": ["http://*/*", "https://*/*"],
-      "js": ["libs/jquery-2.1.4.min.js","content.js","overlay/js/injectOverlay.js", "overlay/js/modernizr.custom.js", "overlay/js/classie.js","overlay/js/demo7.js"],
+      "js": ["libs/jquery-2.1.4.min.js","overlay/js/injectOverlay.js", "content.js", "overlay/js/modernizr.custom.js", "overlay/js/classie.js","overlay/js/demo7.js"],
       "css": ["overlay/css/style8.css"]
     }
     
@@ -45,5 +45,5 @@
   ],
   "content_security_policy": "script-src 'self' 'unsafe-eval' https://maps.googleapis.com https://maps.gstatic.com; object-src 'self'",
 
-  "web_accessible_resources": ["libs/oauth2/oauth2.html"]
+  "web_accessible_resources": ["libs/oauth2/oauth2.html", ""]
 }

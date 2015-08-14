@@ -14,24 +14,16 @@
 
 $(function(){
 
+  // function parseResult (msg){
+  //   alert("Inside Parse");
+  //   var coords = msg.Coords;
+  //   var prices = msg.Prices;
+  // }
+
   // console.log('fooL');
   //
-  var grid = '<div class="overlay-container"><div><h1>Let\'s go <span>Nick</span>!</h1></div>\
-  <table class="reference" style="width:100%">\
-  <tbody><tr>\
-    <td>uberX</td>\
-    <td>8$</td>\
-    <td>0.73 miles</td>\
-    <td><button>Call</button></td>\
-  </tr>\
-  <tr>\
-    <td>uberXL</td>\
-    <td>12$</td>\
-    <td>0.73 miles</td>\
-    <td><button>Call</button></td>\
-  </tr>\
-  </tbody></table>\
-  </div>' ;
+
+var grid = '<div class="overlay-container"><h1>Choose your Ride!</h1></div>' ;
 
   // $( "body" ).append( "<button id='trigger-overlay'>Open Overlay</button>");
 

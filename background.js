@@ -9,7 +9,12 @@
 //     alert('You just typed "' + text + '"');
 // });
 
-// Check if token is on localstorage
+  $('#clearToken').on('click', function(){
+    window.oauth2.clearToken();
+    console.log('clear');
+    window.close();
+  })
+
 if (localStorage.getItem['oauth2_token'] !== undefined) {
   chrome.browserAction.setIcon({
     path : {
@@ -62,11 +67,13 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 });
 
 var sendMe = {};
+var productID;
 // Messaging
 // Long-Lived Connections
 chrome.runtime.onConnect.addListener(function(port) {
     if(port.name == "addresses"){
         port.onMessage.addListener(function(msg) {
+            getUser();
             convertAddress(msg.data);
             console.log("Destination selected: ", msg.data);
         });
@@ -74,9 +81,13 @@ chrome.runtime.onConnect.addListener(function(port) {
     } else if (port.name == "popover"){
         port.onMessage.addListener(function(msg) {
                 sendMe['Profile'] = msg;
-            }
-            
-        });
+            });            
+    } else if (port.name == "rideSelected"){
+        port.onMessage.addListener(function(msg) {
+                productID = msg;
+                console.log("BG got", msg);
+                requestRide();
+            });            
     }
 
 });
@@ -127,7 +138,8 @@ function getUser (){
             Authorization: "Bearer " + token
         },
         success: function(result){
-            console.log(result);
+          console.log(result);
+          
         }
     });
 }
@@ -160,7 +172,7 @@ function getEstimates(lat, lng) {
 
         sendMe['Prices']=data;
         sendmsg();
-        requestRide();
+
 
         if (typeof data != typeof undefined) {
           // Sort Uber products by time to the user's location
@@ -181,11 +193,12 @@ function getEstimates(lat, lng) {
   });
 }
 
+var status, requestID, driver, eta, mapURL;
+
 function requestRide(){
 
     var mydata = sendMe['Coords'];
-    mydata.product_id="d1e548ac-4be5-46c0-8c86-201ac8a36fc6";
-    //GET PROPER PRODUCT ID BASED ON CAR CHOOSEN
+    mydata.product_id=productID;
 
   $.ajax({
         url: "https://sandbox-api.uber.com/v1/requests",
@@ -196,9 +209,36 @@ function requestRide(){
         },
         data: JSON.stringify(mydata),
         success: function(result) {
+            status = result.status;
+            requestID = result.request_id;
+            driver = result.driver;
+            eta = result.eta + " min";
+            getMap(requestID);
             console.log("Ride Request Result", result);
         }
     });
 }
 
+function getMap(id){
+  console.log("Called Get Map");
+  $.ajax({
+        url: "https://sandbox-api.uber.com/v1/requests/"+id+"/map",
+        type: 'GET',
+        contentType: "application/json",
+        headers: {
+            Authorization: "Bearer " + token
+        },
+        success: function(result) {
+          console.log("Get map successful");
+            mapURL=result.href;
+            getPopup();
 
+        }
+    });
+}
+
+function getPopup(){
+  event.preventDefault();
+  window.open(mapURL, "popupWindow", "width=1200,height=1200,scrollbars=yes");
+
+}
