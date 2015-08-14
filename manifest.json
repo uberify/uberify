@@ -20,14 +20,15 @@
 
   "content_scripts": [
     {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["libs/jquery-2.1.4.min.js","content.js"]
+    },
+    {
       "matches": ["https://www.uber.com/robots.txt*"],
       "js": ["libs/oauth2/injection.js"],
       "run_at":"document_start"
-    },
-    {
-      "matches": ["http://*/*", "https://*/*"],
-      "js": ["libs/jquery-2.1.4.min.js","content.js"]
     }
+    
   ],
 
   "icons": { "48": "icons/icon48.png",
@@ -41,6 +42,7 @@
     "https://ajax.googleapis.com/",
     "tabs", "http://*/*", "https://*/*"
   ],
+  "content_security_policy": "script-src 'self' 'unsafe-eval' https://maps.googleapis.com https://maps.gstatic.com; object-src 'self'",
 
   "web_accessible_resources": ["libs/oauth2/oauth2.html"]
 }

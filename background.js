@@ -28,35 +28,25 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 chrome.runtime.onConnect.addListener(function(port) {
     if(port.name == "addresses"){
         port.onMessage.addListener(function(msg) {
-            convertAddress(msg);
-            //console.log(window.localStorage);
+            convertAddress(msg.data);
+            console.log("Destination selected: ", msg.data);
         });
-    }
-    
+    }    
 });
 
-function getPriceEstimates(start_latitude, start_longitude, end_latitude, end_longitude) {
-  var method = 'estimates/price?start_latitude=' + start_latitude + '&start_longitude=' + start_longitude + '&end_latitude=' +
-    end_latitude + '&end_longitude=' + end_longitude;
+var token = window.localStorage.oauth2_token;
+var uberServerToken = 'omqAWb8jjzXpuyw-ae1DRHo5GvJ6zpfFyTxVfTCe';
+var userLatitude, userLongitude;
 
-  Uber.call(method, function(response) {
-    console.log(response.data);
-  });
-}
+navigator.geolocation.watchPosition(function(position) {
+    // Browser latitude and longitude
+    
+    userLatitude = position.coords.latitude;
+    userLongitude = position.coords.longitude;
+    console.log("Got Your Geo position as: "+userLatitude+" Lat "+ userLongitude+" Lng");
+});
 
-var start = {Lat: 37.419938, Long: -122.083479};
-
-function buttonClicked(addr){
-  var inputAddress=addr;
-  if ((inputAddress!=null)&&(inputAddress!="")){
-    var addr = [start.Lat, start.Long];
-    addr.concat(convertAddress(inputAddress));
-    port.postMessage({data: addr}) 
-  } else {
-    displayError("Address can not be empty");
-
-  }
-}
+getUser();
 
 function convertAddress(stringAddress){
   //this function convert stringAddress into lat lng
@@ -64,15 +54,64 @@ function convertAddress(stringAddress){
   var address = stringAddress;
   geocoder.geocode( { 'address': address}, function(results, status) {
     if (status == google.maps.GeocoderStatus.OK) {
-      //displayMap(37.419938, -122.083479, "Atom Cafe, Charleston Road, Mountain View, CA");
-      dLat=results[0].geometry.location.lat();
-      dLng=results[0].geometry.location.lng();
+      var dLat=results[0].geometry.location.lat();
+      var dLng=results[0].geometry.location.lng();
       console.log("Geocoder Lat", dLat);
       console.log("Geocoder Lat", dLng);
-      //getPriceEstimates(start.Lat, start.Long, dLat, dLng);
-      return [dLat, dLng];
+      getEstimates(dLat, dLng);
+      
     } else {
-      displayError('Geocode was not successful for the following reason: ' + status);
+      console.log('Geocode was not successful for the following reason: ' + status);
+    }
+  });
+}
+
+function getUser (){
+    console.log(token);
+
+    $.ajax({
+        url: "https://api.uber.com/v1/me",
+        headers: {
+            Authorization: "Bearer " + token
+        },
+        success: function(result){
+            console.log(result);
+        }
+    });
+}
+
+function getEstimates(lat, lng) {
+  $.ajax({
+    url: "https://api.uber.com/v1/estimates/price",
+    headers: {
+        Authorization: "Token " + uberServerToken
+    },
+    data: {
+        start_latitude: userLatitude,
+        start_longitude: userLongitude,
+        end_latitude: lat,
+        end_longitude: lng
+    },
+    success: function(result) {
+        var data = result["prices"];
+        console.log("Option 1: ", data[0]);
+        console.log("Option 2: ", data[1]);
+
+        if (typeof data != typeof undefined) {
+          // Sort Uber products by time to the user's location
+          data.sort(function(t0, t1) {
+            return t0.duration - t1.duration;
+          });
+
+          // Update the Uber button with the shortest time
+          var shortest = data[0];
+          if (typeof shortest != typeof undefined) {
+            console.log("Updating time estimate...");
+            console.log("You can get there in " + Math.ceil(shortest.duration / 60.0) + " MIN" );
+            alert("You can get there in " + Math.ceil(shortest.duration / 60.0) + " MIN" );
+            //$("#time").html("IN " + Math.ceil(shortest.duration / 60.0) + " MIN");
+          }
+        }
     }
   });
 }
