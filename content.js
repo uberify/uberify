@@ -27,15 +27,14 @@ chrome.extension.onMessage.addListener(function(msg, sender, sendResponse) {
 });
 
 
-  var button= $('<button class="uberButton">Get Uber Estimates</button>');
+var uberButton= $('<button id="trigger-overlay" class="uberButton trigger-overlay">Call Uber</button>');
+$("address").after(uberButton);
+$(".uberButton").each(function () {
+  $(this).click(function () {
+    var addr = $(this).prev("address")[0].innerText;
+    port.postMessage({data: addr})
+    //buttonClicked(addr);
 
-  $("address").after(button);
-  $(".uberButton").each(function () {
-    
-    $(this).click(function () {
-      var addr = $(this).prev("address")[0].innerText;
-      port.postMessage({data: addr})
-    });
   });
 
 
