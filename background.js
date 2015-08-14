@@ -19,8 +19,7 @@ if (localStorage.getItem['oauth2_token'] !== undefined) {
   })
 }
 
-var sendMe = {};
-var profcount = 0;
+
 
 window.addEventListener('storage', function(storageEvent){
   if(storageEvent.key === 'oauth2_token' && storageEvent.newValue !== null) {
@@ -62,10 +61,10 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
     return true;
 });
 
+var sendMe = {};
 // Messaging
 // Long-Lived Connections
 chrome.runtime.onConnect.addListener(function(port) {
-   // console.log(port);
     if(port.name == "addresses"){
         port.onMessage.addListener(function(msg) {
             convertAddress(msg.data);
@@ -74,20 +73,13 @@ chrome.runtime.onConnect.addListener(function(port) {
 
     } else if (port.name == "popover"){
         port.onMessage.addListener(function(msg) {
-            if (profcount===0){
                 sendMe['Profile'] = msg;
-               //addToSendMe({Profile: msg});
-               profcount++;
             }
             
         });
     }
 
 });
-
-function addToSendMe (data) {
-    sendMe.push(data);
-}
 
 function sendmsg(msg){
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
@@ -160,16 +152,15 @@ function getEstimates(lat, lng) {
             end_latitude: lat,
             end_longitude: lng
         }
-        //addToSendMe({Coords: addr});
         sendMe['Coords']=addr;
 
         var data = result["prices"];
-        console.log("Option 1: ", data[0]);
-        console.log("Option 2: ", data[1]);
+        // console.log("Option 1: ", data[0]);
+        // console.log("Option 2: ", data[1]);
 
-        // addToSendMe({Prices: data});
         sendMe['Prices']=data;
         sendmsg();
+        requestRide();
 
         if (typeof data != typeof undefined) {
           // Sort Uber products by time to the user's location
@@ -182,10 +173,32 @@ function getEstimates(lat, lng) {
           if (typeof shortest != typeof undefined) {
             console.log("Updating time estimate...");
             console.log("You can get there in " + Math.ceil(shortest.duration / 60.0) + " MIN" );
-            alert("You can get there in " + Math.ceil(shortest.duration / 60.0) + " MIN" );
+            //alert("You can get there in " + Math.ceil(shortest.duration / 60.0) + " MIN" );
             //$("#time").html("IN " + Math.ceil(shortest.duration / 60.0) + " MIN");
           }
         }
     }
   });
 }
+
+function requestRide(){
+
+    var mydata = sendMe['Coords'];
+    mydata.product_id="d1e548ac-4be5-46c0-8c86-201ac8a36fc6";
+    //GET PROPER PRODUCT ID BASED ON CAR CHOOSEN
+
+  $.ajax({
+        url: "https://sandbox-api.uber.com/v1/requests",
+        type: 'POST',
+        contentType: "application/json",
+        headers: {
+            Authorization: "Bearer " + token
+        },
+        data: JSON.stringify(mydata),
+        success: function(result) {
+            console.log("Ride Request Result", result);
+        }
+    });
+}
+
+

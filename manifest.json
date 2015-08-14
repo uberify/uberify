@@ -20,10 +20,6 @@
 
   "content_scripts": [
     {
-      "matches": ["http://*/*", "https://*/*"],
-      "js": ["libs/jquery-2.1.4.min.js","content.js"]
-    },
-    {
       "matches": ["https://www.uber.com/robots.txt*"],
       "js": ["libs/oauth2/injection.js"],
       "run_at":"document_start"

@@ -12,12 +12,6 @@ $(document).ready(function(){
     });
   }, true);
 
-  // Messaging
-  // Long-Lived Connections
-  var port = chrome.runtime.connect({name: "addresses"});
-  port.onMessage.addListener(function(msg) {
-    console.log(msg)
-  });
 
 chrome.extension.onMessage.addListener(function(msg, sender, sendResponse) {
   console.log("content - Got here", msg)
@@ -31,11 +25,13 @@ var uberButton= $('<button id="trigger-overlay" class="uberButton trigger-overla
 $("address").after(uberButton);
 $(".uberButton").each(function () {
   $(this).click(function () {
+    var port = chrome.runtime.connect({name: "addresses"});
     var addr = $(this).prev("address")[0].innerText;
     port.postMessage({data: addr})
     //buttonClicked(addr);
 
   });
+});
 
 
 });

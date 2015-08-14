@@ -24,10 +24,10 @@ $(function(){
 
   }
 
-  var port = chrome.extension.connect({name: "popover"});
-  port.onMessage.addListener(function(msg) {
-    console.log("message recieved "+ msg);
-  });
+  
+  // port.onMessage.addListener(function(msg) {
+  //   console.log("message recieved "+ msg);
+  // });
 
   $('#oauthButton').on('click', function(){
     console.log('start');
@@ -63,6 +63,7 @@ $(function(){
             localStorage.setItem('account', JSON.stringify({'firstName': result.first_name, 'lastName': result.last_name, 'picture': result.picture}))
             
             profile = JSON.parse(localStorage.getItem('account'));
+            var port = chrome.extension.connect({name: "popover"});
             port.postMessage(profile);
             $('.name span').text(profile.firstName);
             $('.profile').attr("src", profile.picture);
