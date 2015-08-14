@@ -1,0 +1,111 @@
+body, html {
+  padding: 0;
+  margin: 0;
+  background: #09091A;
+  color: #fff;
+  font-family: 'Lato', sans-serif;
+}
+
+body {
+  background-image: url('img/top-circles.png');
+  background-repeat:no-repeat;
+  background-position: right 23px top -5px;
+}
+
+h1, h2 {
+  font-weight: 100;
+  font-size: 80px;
+  padding: 60px;
+  padding-bottom: 0px;
+}
+
+h3 {
+  font-weight: 100;
+  font-size: 30px;
+}
+
+h1 span {
+  background: #09091A;
+}
+
+.beenfit1 {
+  margin-top: 0px;
+  margin-left: 103px;
+  height: 500px;
+
+  border-left: 1px solid #1FBAD6;
+}
+
+.beenfit1 div {
+  background: #181526;
+  padding: 10px;
+  font-weight: 100;
+  font-size: 20px;
+}
+
+.beenfit1 div span {
+  color: #1FBAD6;
+
+}
+
+.beenfit2 {
+  background: #1FBAD6;
+  padding-bottom: 60px;
+  margin-top: -70px;
+  font-weight: 100;
+}
+
+.beenfit2 div,  .beenfit4 div{
+  padding-left: 60px;
+  padding-right: 60px;
+}
+.beenfit2 p, .beenfit4 p {
+  font-size: 20px;
+}
+.beenfit3 {
+  height:100px;
+  background-image: url('img/map.png');
+  background-repeat:no-repeat;
+  background-size: 100%;
+  border-bottom: 1px solid #1FBAD6;
+  width:100%;
+}
+
+.beenfit4 h2 {
+  color: #1FBAD6;
+  padding-top:0;
+}
+
+.blue {
+  color: #1FBAD6;
+  font-weight: 300;
+}
+.beenfit4 {
+  font-weight: 100;
+  background: #09091A;
+  padding-bottom: 60px;
+}
+
+.beenfit4 img{
+  border-radius: 100%;
+  width: 80px;
+  vertical-align: middle;
+  margin-right: 20px;
+  border: 2px solid #1fbad6;
+  -moz-box-shadow: 0 0 10px #1fbad6;
+  -webkit-box-shadow: 0 0 10px #1fbad6;
+  box-shadow: 0px 0px 10px #1fbad6;
+}
+
+.beenfit5 {
+  height:140px;
+  background-image: url('img/grid-hover2.png');
+  background-repeat:no-repeat;
+  background-size: 100%;
+  border-top: 1px solid #1FBAD6;
+  width:100%;
+}
+
+a {
+  color: #fff;
+}
