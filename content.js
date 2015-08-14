@@ -29,7 +29,7 @@ var contentID = chrome.runtime.id;
 // })
 
 
-var uberButton= $('<button class="uberButton">Call Uber</button>');
+var uberButton= $('<button id="trigger-overlay" class="uberButton trigger-overlay">Call Uber</button>');
 $("address").after(uberButton);
 $(".uberButton").each(function () {
   $(this).click(function () {
