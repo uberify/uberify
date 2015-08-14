@@ -96,7 +96,7 @@ var Uber = (function() {
             successCallback(response);
         },
         //defaultCorsHeaders
-        {'Authorization': 'Bearer ' + storage}
+        {'Authorization': 'Bearer ' + token}
       );
     }
 
