@@ -1,0 +1,49 @@
+{
+  "name": "uberify",
+  "description": "One click to ride",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "browser_action": {
+    "default_icon": {
+      "19": "icons/19x19.png",
+      "38": "icons/38x38.png"
+    },
+    "default_title": "That's the tool tip",
+    "default_popup": "index.html"
+  },
+
+  "background": {
+   // "scripts": ["libs/Ajax.js", "libs/uber.js", "background.js"],
+    "page": "background.html",
+    "persistent": true
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["https://www.uber.com/robots.txt*"],
+      "js": ["libs/oauth2/injection.js"],
+      "run_at":"document_start"
+    },
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["libs/jquery-2.1.4.min.js","overlay/js/injectOverlay.js", "content.js", "overlay/js/modernizr.custom.js", "overlay/js/classie.js","overlay/js/demo7.js"],
+      "css": ["overlay/css/style8.css"]
+    }
+    
+  ],
+
+  "icons": { "48": "icons/icon48.png",
+            "128": "icons/icon128.png" },
+
+  "omnibox": { "keyword" : "uber" },
+
+  "permissions": [
+    "activeTab",
+    "geolocation",
+    "https://ajax.googleapis.com/",
+    "tabs", "http://*/*", "https://*/*"
+  ],
+  "content_security_policy": "script-src 'self' 'unsafe-eval' https://maps.googleapis.com https://maps.gstatic.com; object-src 'self'",
+
+  "web_accessible_resources": ["libs/oauth2/oauth2.html", ""]
+}
