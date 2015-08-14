@@ -2,7 +2,7 @@
 // One-Time Requests
 
 $(document).ready(function(){
-  
+
   window.addEventListener("load", function() {
     chrome.extension.sendMessage({
       type: "dom-loaded",
@@ -29,7 +29,7 @@ chrome.extension.onMessage.addListener(function(msg, sender, sendResponse) {
                   </tr>";
     $('.results').append(string);
   }
-    
+
     $(".callButton").each(function () {
       $(this).click(function () {
         var id = "" + (this.id);
@@ -56,7 +56,7 @@ $(".uberButton").each(function () {
 
   });
 });
-var table = '<table class="reference"><tbody class="results">'
+var table = '<table class="reference" style="width:100%"><tbody class="results">'
 $('.overlay-container').append(table);
 
 
