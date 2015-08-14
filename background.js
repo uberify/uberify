@@ -9,8 +9,44 @@
 //     alert('You just typed "' + text + '"');
 // });
 
+// Check if token is on localstorage
+if (localStorage.getItem['oauth2_token'] !== undefined) {
+  chrome.browserAction.setIcon({
+    path : {
+        "19": "icons/19x19-active.png",
+        "38": "icons/38x38-active.png"
+      }
+  })
+}
+
+window.addEventListener('storage', function(storageEvent){
+  if(storageEvent.key === 'oauth2_token' && storageEvent.newValue !== null) {
+    chrome.browserAction.setIcon({
+      path : {
+          "19": "icons/19x19-active.png",
+          "38": "icons/38x38-active.png"
+        }
+    })
+  } else {
+    chrome.browserAction.setIcon({
+      path : {
+          "19": "icons/19x19.png",
+          "38": "icons/38x38.png"
+        }
+    })
+  }
+}, false);
+
+// Storing currentPosition on localStorage
+navigator.geolocation.getCurrentPosition(function(position) {
+  localStorage.setItem('currentPosition', [position.coords.latitude, position.coords.longitude])
+  // console.log(localStorage.getItem('currentPosition'));
+});
+
 // Icon badges
-chrome.browserAction.setBadgeText({text: "1"});
+// chrome.browserAction.setBadgeBackgroundColor({ color: [31, 186, 214, 255] });
+// chrome.browserAction.setBadgeText({text: "1"});
+
 
 // Messaging
 // One-Time Requests
@@ -31,12 +67,21 @@ chrome.runtime.onConnect.addListener(function(port) {
             convertAddress(msg.data);
             console.log("Destination selected: ", msg.data);
         });
-    }    
+
+    } else if (port.name == "popover"){
+        port.onMessage.addListener(function(msg) {
+            console.log(msg)
+            port.postMessage("Hi Popup.js");
+            //console.log(window.localStorage);
+        });
+    }
+
 });
 
 var token = window.localStorage.oauth2_token;
 var uberServerToken = 'omqAWb8jjzXpuyw-ae1DRHo5GvJ6zpfFyTxVfTCe';
 var userLatitude, userLongitude;
+
 
 navigator.geolocation.watchPosition(function(position) {
     // Browser latitude and longitude
@@ -45,6 +90,7 @@ navigator.geolocation.watchPosition(function(position) {
     userLongitude = position.coords.longitude;
     console.log("Got Your Geo position as: "+userLatitude+" Lat "+ userLongitude+" Lng");
 });
+
 
 getUser();
 
