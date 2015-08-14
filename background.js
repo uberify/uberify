@@ -238,7 +238,7 @@ function getMap(id){
 }
 
 function getPopup(){
-  event.preventDefault();
+  //event.preventDefault();
   window.open(mapURL, "popupWindow", "width=1200,height=1200,scrollbars=yes");
 
 }
