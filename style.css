@@ -10,6 +10,7 @@ body {
   background-image: url('img/top-circles.png');
   background-repeat:no-repeat;
   background-position: right 23px top -5px;
+  border: 1px solid #000;
 }
 
 h1, h2 {
@@ -26,6 +27,17 @@ h3 {
 
 h1 span {
   background: #09091A;
+}
+
+h3 span {
+  background: #09091A;
+}
+
+.winner {
+/*  padding: 10px;*/
+  display: table;
+  margin: 0 auto;
+  position: right 23px top -5px;
 }
 
 #video {
@@ -115,3 +127,55 @@ h1 span {
 a {
   color: #fff;
 }
+
+.ribbon {
+  position: absolute;
+  left: -5px; top: -5px;
+  z-index: 1;
+  overflow: hidden;
+  width: 200px; height: 200px;
+  text-align: right;
+}
+.ribbon a:link {
+    text-decoration: none;
+}
+.ribbon span {
+  font-size: 10px;
+  font-weight: bold;
+  color: #FFF;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 20px;
+  transform: rotate(-45deg);
+  width: 200px;
+  display: block;
+  background: #79A70A;
+  /* Blue */
+  /*background: linear-gradient(#2989d8 0%, #1e5799 100%);*/
+  /* Orange */      
+  /*background: linear-gradient(#F79E05 0%, #8F5408 100%);*/
+  /* Green */    
+  background: linear-gradient(#9BC90D 0%, #79A70A 100%);      
+  box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
+  position: absolute;
+  top: 60px; left: -30px;
+}
+.ribbon span::before {
+  content: "";
+  position: absolute; left: 0px; top: 100%;
+  z-index: -1;
+  border-left: 3px solid #1e5799;
+  border-right: 3px solid transparent;
+  border-bottom: 3px solid transparent;
+  border-top: 3px solid #1e5799;
+}
+.ribbon span::after {
+  content: "";
+  position: absolute; right: 0px; top: 100%;
+  z-index: -1;
+  border-left: 3px solid transparent;
+  border-right: 3px solid #1e5799;
+  border-bottom: 3px solid transparent;
+  border-top: 3px solid #1e5799;
+}
+
