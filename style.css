@@ -9,7 +9,7 @@ body, html {
 body {
   background-image: url('img/top-circles.png');
   background-repeat:no-repeat;
-  background-position: right 23px top -5px;
+  background-position: right 23px top 5px;
   border: 1px solid #000;
 }
 
@@ -31,13 +31,6 @@ h1 span {
 
 h3 span {
   background: #09091A;
-}
-
-.winner {
-/*  padding: 10px;*/
-  display: table;
-  margin: 0 auto;
-  position: right 23px top -5px;
 }
 
 #video {
@@ -129,11 +122,14 @@ a {
 }
 
 .ribbon {
+  background-image: url('./img/readmore.png');
+  background-repeat:no-repeat;
+  background-position: left 20px top 10px;
   position: absolute;
   left: -5px; top: -5px;
   z-index: 1;
   overflow: hidden;
-  width: 200px; height: 200px;
+  width: 150px; height: 150px;
   text-align: right;
 }
 .ribbon a:link {
